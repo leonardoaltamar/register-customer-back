@@ -1,4 +1,4 @@
-import { CustomerDatasource } from "../../domain/datasource/gender.datasource";
+import { CustomerDatasource } from "../../domain/datasource/customer.datasource";
 import { CustomerEntity } from "../../domain/entity/customer.entity";
 import { CustomerRepository } from "../../domain/repository/customer.repository";
 
