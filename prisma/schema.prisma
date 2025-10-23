@@ -10,7 +10,7 @@ datasource db {
 model customers {
   id         Int       @id @default(autoincrement())
   person_id  Int
-  created_at DateTime  @db.DateTime(0)
+  created_at DateTime  @default(now()) @db.DateTime(0)
   updated_at DateTime? @db.DateTime(0)
   deleted_at DateTime? @db.DateTime(0)
   persons    persons   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customers_persons1")
@@ -20,15 +20,16 @@ model customers {
 
 model document_types {
   id          Int       @id @default(autoincrement())
+  code        String    @unique @db.VarChar(10)
   description String    @db.VarChar(45)
-  created_at  DateTime  @db.DateTime(0)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
   updated_at  DateTime? @db.DateTime(0)
   deleted_at  DateTime? @db.DateTime(0)
   persons     persons[]
 }
 
 model persons {
-  id               Int            @id
+  id               Int            @id @default(autoincrement())
   first_name       String         @db.VarChar(45)
   second_name      String?        @db.VarChar(45)
   surname          String         @db.VarChar(45)
@@ -37,8 +38,7 @@ model persons {
   document_number  String         @db.VarChar(45)
   expedition_date  DateTime       @db.DateTime(0)
   birthdate        DateTime       @db.DateTime(0)
-  gender_id        Int
-  created_at       DateTime       @db.DateTime(0)
+  created_at       DateTime?      @default(now()) @db.DateTime(0)
   updated_at       DateTime?      @db.DateTime(0)
   deleted_at       DateTime?      @db.DateTime(0)
   customers        customers[]
@@ -46,7 +46,6 @@ model persons {
   users            users[]
 
   @@index([document_type_id], map: "fk_persons_document_types_idx")
-  @@index([gender_id], map: "fk_persons_genders1_idx")
 }
 
 model users {
@@ -54,10 +53,27 @@ model users {
   username   String    @db.VarChar(45)
   password   String    @db.VarChar(200)
   person_id  Int
-  created_at DateTime  @db.DateTime(0)
+  created_at DateTime  @default(now()) @db.DateTime(0)
   updated_at DateTime? @db.DateTime(0)
   deleted_at DateTime? @db.DateTime(0)
   persons    persons   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_persons1")
+  tickets    Tickets[]
 
   @@index([person_id], map: "fk_users_persons1_idx")
+}
+
+model Tickets {
+  id          Int       @id @default(autoincrement())
+  code        String    @db.VarChar(100)
+  description String    @db.VarChar(100)
+  date_init   DateTime  @db.DateTime(0)
+  date_end    DateTime  @db.DateTime(0)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @db.DateTime(0)
+  deleted_at  DateTime? @db.DateTime(0)
+
+  user_id Int
+  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tickets_users1")
+
+  @@index([user_id], map: "fk_tickets_users1_idx")
 }
