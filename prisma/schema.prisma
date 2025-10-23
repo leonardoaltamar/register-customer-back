@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model customers {
+  id         Int       @id @default(autoincrement())
+  person_id  Int
+  created_at DateTime  @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  persons    persons   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customers_persons1")
+
+  @@index([person_id], map: "fk_customers_persons1_idx")
+}
+
+model document_types {
+  id          Int       @id @default(autoincrement())
+  description String    @db.VarChar(45)
+  created_at  DateTime  @db.DateTime(0)
+  updated_at  DateTime? @db.DateTime(0)
+  deleted_at  DateTime? @db.DateTime(0)
+  persons     persons[]
+}
+
+model persons {
+  id               Int            @id
+  first_name       String         @db.VarChar(45)
+  second_name      String?        @db.VarChar(45)
+  surname          String         @db.VarChar(45)
+  second_surname   String?        @db.VarChar(45)
+  document_type_id Int
+  document_number  String         @db.VarChar(45)
+  expedition_date  DateTime       @db.DateTime(0)
+  birthdate        DateTime       @db.DateTime(0)
+  gender_id        Int
+  created_at       DateTime       @db.DateTime(0)
+  updated_at       DateTime?      @db.DateTime(0)
+  deleted_at       DateTime?      @db.DateTime(0)
+  customers        customers[]
+  document_types   document_types @relation(fields: [document_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_persons_document_types")
+  users            users[]
+
+  @@index([document_type_id], map: "fk_persons_document_types_idx")
+  @@index([gender_id], map: "fk_persons_genders1_idx")
+}
+
+model users {
+  id         Int       @id @default(autoincrement())
+  username   String    @db.VarChar(45)
+  password   String    @db.VarChar(200)
+  person_id  Int
+  created_at DateTime  @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  persons    persons   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_persons1")
+
+  @@index([person_id], map: "fk_users_persons1_idx")
+}
