@@ -26,8 +26,8 @@ export class Server {
         //* Routes
         this.app.use(this.routes);
 
-        this.app.listen(3001, () => {
-            console.log(`Server running on port ${3001}`)
+        this.app.listen(this.port, () => {
+            console.log(`Server running on port ${this.port}`)
         })
     }
 
