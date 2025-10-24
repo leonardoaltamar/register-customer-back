@@ -1,0 +1,1 @@
+export * from './entity/auth.entity';

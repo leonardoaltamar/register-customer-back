@@ -20,4 +20,12 @@ export class CustomerRepositoryImpl implements CustomerRepository {
         return this.datasource.getById(id);
     }
 
+    delete(id: number): Promise<void> {
+        return this.datasource.delete(id);
+    }
+
+    update(id: number, data: Partial<CustomerEntity>): Promise<CustomerEntity> {
+        return this.datasource.update(id, data);
+    }
+
 }

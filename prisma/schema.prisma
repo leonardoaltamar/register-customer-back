@@ -49,17 +49,20 @@ model persons {
 }
 
 model users {
-  id         Int       @id @default(autoincrement())
-  username   String    @db.VarChar(45)
-  password   String    @db.VarChar(200)
-  person_id  Int
-  created_at DateTime  @default(now()) @db.DateTime(0)
-  updated_at DateTime? @db.DateTime(0)
-  deleted_at DateTime? @db.DateTime(0)
-  persons    persons   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_persons1")
-  tickets    Tickets[]
+  id           Int        @id @default(autoincrement())
+  username     String     @unique @db.VarChar(45)
+  password     String     @db.VarChar(200)
+  person_id    Int
+  user_type_id Int
+  created_at   DateTime   @default(now()) @db.DateTime(0)
+  updated_at   DateTime?  @db.DateTime(0)
+  deleted_at   DateTime?  @db.DateTime(0)
+  persons      persons    @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_persons1")
+  user_types   user_types @relation(fields: [user_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_user_types1")
+  tickets      Tickets[]
 
   @@index([person_id], map: "fk_users_persons1_idx")
+  @@index([user_type_id], map: "fk_users_user_types1_idx")
 }
 
 model Tickets {
@@ -76,4 +79,14 @@ model Tickets {
   users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tickets_users1")
 
   @@index([user_id], map: "fk_tickets_users1_idx")
+}
+
+model user_types {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique @db.VarChar(10)
+  description String    @db.VarChar(45)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @db.DateTime(0)
+  deleted_at  DateTime? @db.DateTime(0)
+  users       users[]
 }

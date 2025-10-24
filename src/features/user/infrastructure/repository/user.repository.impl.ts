@@ -7,6 +7,9 @@ import { UserRepository } from "../../domain/repository/user.repository";
 export class UserRepositoryImpl implements UserRepository {
 
     constructor(private readonly datasource: UserDataSource) { }
+    getByUserName(userName: string): Promise<UserEntity> {
+        return this.datasource.getByUserName(userName);
+    }
 
     create(gender: UserEntity): Promise<UserEntity> {
         return this.datasource.create(gender);
@@ -21,5 +24,7 @@ export class UserRepositoryImpl implements UserRepository {
     getById(id: number): Promise<UserEntity> {
         return this.datasource.getById(id);
     }
+
+
 
 }

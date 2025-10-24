@@ -1,34 +1,35 @@
 import express, { Router } from 'express'
+import cors from 'cors';
 
 interface Options {
-    port: number, 
+    port: number,
     routes: Router
 }
 
-export class Server{
+export class Server {
     private app = express();
     private readonly port: number;
     private readonly routes: Router;
 
-    constructor(options: Options){
+    constructor(options: Options) {
         const { port, routes } = options;
         this.port = port;
         this.routes = routes;
     }
 
 
-    async start(){
+    async start() {
         /* Middlewares */
-        this.app.use( express.json() ) //raw
-        this.app.use( express.urlencoded( {extended:  true} ) ) //x-www-form-urlencoded
-
+        this.app.use(express.json()) //raw
+        this.app.use(express.urlencoded({ extended: true })) //x-www-form-urlencoded
+        this.app.use(cors());
         //* Routes
-        this.app.use( this.routes );
+        this.app.use(this.routes);
 
-        this.app.listen(3000, ()=>{
-            console.log(`Server running on port ${3000}`)
+        this.app.listen(3001, () => {
+            console.log(`Server running on port ${3001}`)
         })
     }
 
-    
+
 }

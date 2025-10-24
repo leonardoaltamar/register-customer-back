@@ -8,4 +8,10 @@ export abstract class CustomerDatasource {
 
     abstract getById(id: number): Promise<CustomerEntity>;
 
+    // Soft delete: sets deleted_at automatically
+    abstract delete(id: number): Promise<void>;
+
+    // Update person data for a customer without changing document fields
+    abstract update(id: number, data: Partial<CustomerEntity>): Promise<CustomerEntity>;
+
 }

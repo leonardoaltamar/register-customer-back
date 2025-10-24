@@ -8,4 +8,5 @@ export abstract class UserRepository {
 
     abstract getById(id: number): Promise<UserEntity>;
 
+    abstract getByUserName(userName: string): Promise<UserEntity>;
 }

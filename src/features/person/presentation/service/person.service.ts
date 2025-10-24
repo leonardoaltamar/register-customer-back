@@ -6,8 +6,8 @@ export class PersonService {
 
     }
 
-    public create = async (gender: PersonEntity) => {
-        return await this.repository.create(gender);
+    public create = async (person: PersonEntity) => {
+        return await this.repository.create(person);
     }
 
 }

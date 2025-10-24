@@ -17,9 +17,11 @@ export class CustomerRouter {
         const customerController = new CustomerController(customerService);
 
 
-        router.get('/', customerController.getAll)
-        router.get('/:id', customerController.getById)
-        router.post('/', customerController.create)
+    router.get('/', customerController.getAll)
+    router.get('/:id', customerController.getById)
+    router.post('/', customerController.create)
+    router.put('/:id', customerController.update)
+    router.delete('/:id', customerController.delete)
 
 
         return router;

@@ -8,4 +8,6 @@ export abstract class UserDataSource {
 
     abstract getById(id: number): Promise<UserEntity>;
 
+    abstract getByUserName(userName: string): Promise<UserEntity>;
+
 }

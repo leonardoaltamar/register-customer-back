@@ -6,7 +6,7 @@ import { UserService } from "../service/user.service";
 import { UserController } from "../controller/user.controller";
 
 
-export class GenderRouter {
+export class UserRouter {
     static get routes(): Router {
         const router = Router();
 

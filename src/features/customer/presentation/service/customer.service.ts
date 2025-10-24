@@ -18,4 +18,12 @@ export class CustomerService {
         return await this.customerRepository.create(gender);
     }
 
+    public delete = async (id: number): Promise<void> => {
+        return await this.customerRepository.delete(id);
+    }
+
+    public update = async (id: number, data: Partial<CustomerEntity>): Promise<CustomerEntity> => {
+        return await this.customerRepository.update(id, data);
+    }
+
 }

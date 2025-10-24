@@ -43,4 +43,18 @@ export class CustomerController {
                 res.status(404).json({ error: error, data: null })
             })
     }
+
+    public delete = (req: Request, res: Response) => {
+        const id = +req.params.id;
+        this.service.delete(id)
+            .then(() => res.status(204).send())
+            .catch(error => res.status(400).json({ error, data: null }));
+    }
+
+    public update = (req: Request, res: Response) => {
+        const id = +req.params.id;
+        this.service.update(id, req.body)
+            .then(customer => res.json({ error: null, data: customer }))
+            .catch(error => res.status(400).json({ error, data: null }));
+    }
 }
