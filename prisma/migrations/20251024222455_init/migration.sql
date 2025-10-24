@@ -48,11 +48,14 @@ CREATE TABLE `users` (
     `username` VARCHAR(45) NOT NULL,
     `password` VARCHAR(200) NOT NULL,
     `person_id` INTEGER NOT NULL,
+    `user_type_id` INTEGER NOT NULL,
     `created_at` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` DATETIME(0) NULL,
     `deleted_at` DATETIME(0) NULL,
 
+    UNIQUE INDEX `users_username_key`(`username`),
     INDEX `fk_users_persons1_idx`(`person_id`),
+    INDEX `fk_users_user_types1_idx`(`user_type_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -72,6 +75,19 @@ CREATE TABLE `Tickets` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `user_types` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `code` VARCHAR(10) NOT NULL,
+    `description` VARCHAR(45) NOT NULL,
+    `created_at` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `updated_at` DATETIME(0) NULL,
+    `deleted_at` DATETIME(0) NULL,
+
+    UNIQUE INDEX `user_types_code_key`(`code`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `customers` ADD CONSTRAINT `fk_customers_persons1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -80,6 +96,9 @@ ALTER TABLE `persons` ADD CONSTRAINT `fk_persons_document_types` FOREIGN KEY (`d
 
 -- AddForeignKey
 ALTER TABLE `users` ADD CONSTRAINT `fk_users_persons1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `users` ADD CONSTRAINT `fk_users_user_types1` FOREIGN KEY (`user_type_id`) REFERENCES `user_types`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `Tickets` ADD CONSTRAINT `fk_tickets_users1` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
